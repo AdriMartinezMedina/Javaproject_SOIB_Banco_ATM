@@ -324,12 +324,24 @@ public class Register_Window extends javax.swing.JFrame {
         String cp = jTextFieldCP.getText();
         String email = jTextFieldEmail.getText();
         String contrasena = String.valueOf(jPasswordFieldContrasenaRegistro.getPassword());
-        boolean registrado = registrar(nombre, apellidos, dni, fecha, direccion, cp, email, contrasena);
+        Cliente cliente = registrar(nombre, apellidos, dni, fecha, direccion, cp, email, contrasena);
 
-        if (registrado == false) {
+        if (cliente == null) {
             JOptionPane.showMessageDialog(null, "No se ha registrado pinche pendejo", "Error al registrar", JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Bienvenido", "Se ha registrado correctamente", JOptionPane.INFORMATION_MESSAGE);
+
+            // instanciamos un objeto de la clase Register_Window.java
+            Home home = new Home(cliente);
+
+            //hacemos visible el formulario  
+            home.setVisible(true);
+            this.setVisible(false);
+            try {
+                this.setVisible(false);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -433,8 +445,9 @@ public class Register_Window extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldNombre;
     // End of variables declaration//GEN-END:variables
 
-    private boolean registrar(String nombre, String apellidos, String dni, String fecha, String direccion, String cp, String email, String contrasena) {
+    private Cliente registrar(String nombre, String apellidos, String dni, String fecha, String direccion, String cp, String email, String contrasena) {
 
+        Cliente cliente = null;
         try {
             //aqui nos registramos
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/atm", "root", "");
@@ -457,6 +470,8 @@ public class Register_Window extends javax.swing.JFrame {
             rs = st.executeQuery(query);
             while (rs.next()) {
                 id_cliente = rs.getInt("id");
+                cliente = new Cliente(rs.getInt("id"), rs.getString("nombre"), rs.getString("apellidos"), rs.getDate("f_nacimiento"), rs.getString("dni"), rs.getString("direccion"), rs.getString("poblacion"), rs.getString("usuario"), rs.getString("contrasena"), rs.getString("f_cr"));
+
             }
             System.out.println("ID " + id_cliente);
             String iban = "ES";
@@ -475,12 +490,11 @@ public class Register_Window extends javax.swing.JFrame {
 
             balance.executeUpdate();
 
-            return true;
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return false;
+        return cliente;
+
     }
 }
