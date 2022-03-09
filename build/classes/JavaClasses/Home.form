@@ -262,6 +262,9 @@
             <Property name="text" type="java.lang.String" value="Enviar"/>
             <Property name="horizontalTextPosition" type="int" value="2"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="EnviarButton.setVisible(false);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="ExtraerButton">
           <Properties>
@@ -313,6 +316,9 @@
               <Image iconType="3" name="/Media/icons8-money-30.png"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="imagenenviar.setVisible(false);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="Imagenextraer">
           <Properties>

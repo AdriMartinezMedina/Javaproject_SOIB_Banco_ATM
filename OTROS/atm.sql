@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-02-2022 a las 10:19:09
+-- Tiempo de generación: 09-03-2022 a las 10:52:27
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -45,30 +45,8 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`id`, `nombre`, `apellidos`, `f_nacimiento`, `dni`, `direccion`, `poblacion`, `usuario`, `contrasena`, `f_cr`) VALUES
-(6, 'yuijo', 'uio', '1998-12-05', 'uijok', 'guyi', 'vubin', 'hola', 'hola', '2022-02-09 10:12:56'),
-(8, 'hgjk', 'hbjnkl', '1999-01-01', 'jkml', 'ui', 'uinjmo', 'hbnj', '4d186321c1a7f0f354b297e8914ab240', '2022-02-04 13:29:23'),
-(9, 'Fran', 'Duque', '1963-01-13', '3043535X', 'calle del sol', '07020', 'fran@casa.com', 'pepona', '2022-02-04 13:29:23'),
-(10, 'uhijokp', 'uijokp', '1998-12-12', 'uijok', 'ubyijo', '08734', 'hoola', 'hoola', '2022-02-09 10:22:56'),
-(11, 'uhijokp', 'uijokp', '1998-12-12', 'uijok', 'ubyijo', '08734', 'hoola', 'hoola', '2022-02-09 10:22:56'),
-(12, 'yguhimo', 'hbnjmk', '1998-12-12', 'uiokp', 'binomk', '98776', 'hoooola', 'hola', '2022-02-09 10:24:44'),
-(13, 'yguhimo', 'hbnjmk', '1998-12-12', 'uiokp', 'binomk', '98776', 'hoooola', 'hola', '2022-02-09 10:24:44'),
-(14, 'uhjoikp', 'uijokpl', '1998-01-12', 'uijokpl', 'niomkl,', '8790', 'iojlk,', 'bnjmlk', '2022-02-09 10:25:56'),
-(15, 'uhjoikp', 'uijokpl', '1998-01-12', 'uijokpl', 'niomkl,', '8790', 'iojlk,', 'bnjmlk', '2022-02-09 10:25:56'),
-(16, 'bnjmkl', 'jnkml', '1998-12-12', 'bhjkml', 'buink', '7689', 'bhjnmlk', 'hbjkml', '2022-02-09 10:27:06'),
-(17, 'bnjmkl', 'jnkml', '1998-12-12', 'bhjkml', 'buink', '7689', 'bhjnmlk', 'hbjkml', '2022-02-09 10:27:06'),
-(18, 'jiokp', 'njmk', '1991-12-12', 'njkml,', 'njkl', 'njkml', 'njkml', 'kjmlñ', '2022-02-09 10:27:59'),
-(19, 'jiokp', 'njmk', '1991-12-12', 'njkml,', 'njkl', 'njkml', 'njkml', 'kjmlñ', '2022-02-09 10:27:59'),
-(20, 'njjmkl', 'jnkml', '1992-12-12', 'njmlk,ñ', 'buikl', 'njkml', 'njmlk', 'kjmlñ', '2022-02-09 10:28:56'),
-(21, 'njjmkl', 'jnkml', '1992-12-12', 'njmlk,ñ', 'buikl', 'njkml', 'njmlk', 'kjmlñ', '2022-02-09 10:28:56'),
-(22, 'bnjk', 'njkl', '1991-12-12', 'jnkml', 'mkl', 'kml', 'kml', 'kml,ñ', '2022-02-09 10:31:04'),
-(23, 'bnjk', 'njkl', '1991-12-12', 'jnkml', 'mkl', 'kml', 'kml', 'kml,ñ', '2022-02-09 10:31:04'),
-(24, 'Ibra ', 'Alhamuti', '1992-12-12', '43234234', 'arta', '07694', 'ibra', 'ibra', '2022-02-09 10:44:33'),
-(25, 'Ibra ', 'Alhamuti', '1992-12-12', '43234234', 'arta', '07694', 'ibra', 'ibra', '2022-02-09 10:44:33'),
-(26, 'Ibra ', 'Alhamuti', '1992-12-12', '43234234', 'arta', '07694', 'ibra', 'ibra', '2022-02-09 10:44:48'),
-(27, 'Ibra ', 'Alhamuti', '1992-12-12', '43234234', 'arta', '07694', 'ibra', 'ibra', '2022-02-09 10:44:48'),
-(28, 'Ibra ', 'Alhamuti', '1992-12-12', '43234234', 'arta', '07694', 'ibra', 'ibra', '2022-02-09 10:44:50'),
-(29, 'Ibra ', 'Alhamuti', '1992-12-12', '43234234', 'arta', '07694', 'ibra', 'ibra', '2022-02-09 10:44:50'),
-(30, 'hbjnkm', 'jnhkml', '1991-12-12', 'jnkml', 'uiok', 'nimo', 'nijmok', 'jnimk', '2022-02-09 10:46:17');
+(20, 'Pepona', 'Pepa', '1992-12-12', 'X12312312', 'Calle Colon', 'Manacor', 'trans', 'trans', '2022-02-11 13:15:27'),
+(37, 'hola', 'hola', '1992-12-12', 'X6325454B', 'erger', '325', 'hola', '99800b85d3383e3a2fb45eb7d0066a4879a9dad0', '2022-03-09 09:30:08');
 
 -- --------------------------------------------------------
 
@@ -100,7 +78,8 @@ CREATE TABLE `cuentas_corrientes` (
 --
 
 INSERT INTO `cuentas_corrientes` (`id`, `iban`, `balance`, `id_cliente`) VALUES
-(4, 'ES333333333333333333', 0, 11);
+(4, 'ES333333333333333333', -125.01000000000005, 20),
+(11, 'ES5073296620449579748743', -248.78000000000003, 37);
 
 -- --------------------------------------------------------
 
@@ -116,6 +95,13 @@ CREATE TABLE `tarjetas` (
   `id_cuenta_corriente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `tarjetas`
+--
+
+INSERT INTO `tarjetas` (`id`, `numero_tarjeta`, `fecha_caducidad`, `cvv`, `id_cuenta_corriente`) VALUES
+(33, 4390, '2027-03-09', 419, 4);
+
 -- --------------------------------------------------------
 
 --
@@ -130,6 +116,44 @@ CREATE TABLE `transacciones` (
   `id_cuenta_corriente` int(11) DEFAULT NULL,
   `id_cliente` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `transacciones`
+--
+
+INSERT INTO `transacciones` (`id`, `tipo_transaccion`, `cantidad_transaccion`, `id_tarjeta`, `id_cuenta_corriente`, `id_cliente`) VALUES
+(27, 0, 23, NULL, 4, 20),
+(33, 0, 67, NULL, 9, 35),
+(34, 1, 12, NULL, 9, 35),
+(35, 0, 34, NULL, 4, 20),
+(36, 1, 34, NULL, 4, 20),
+(37, 0, 120, NULL, 4, 20),
+(38, 0, 130, NULL, 4, 20),
+(39, 0, 12, NULL, 4, 20),
+(40, 0, 190, NULL, 4, 20),
+(41, 0, 234, NULL, 4, 20),
+(42, 0, 1234, NULL, 4, 20),
+(43, 0, 234, NULL, 4, 20),
+(44, 0, 12321, NULL, 4, 20),
+(45, 0, 123, NULL, 4, 20),
+(46, 0, 120, NULL, 4, 20),
+(47, 1, 10000, NULL, 4, 20),
+(48, 0, 20000, NULL, 4, 20),
+(49, 1, 34.34, NULL, 4, 20),
+(50, 1, 12.12, NULL, 4, 20),
+(51, 1, 2751, NULL, 4, 20),
+(52, 1, 0.5, NULL, 4, 20),
+(53, 1, 12.3, NULL, 4, 20),
+(54, 1, 12.32, NULL, 4, 20),
+(55, 1, 123.43, NULL, 4, 20),
+(56, 1, -23, NULL, 4, 20),
+(57, 0, 120.4, NULL, 11, 37),
+(58, 0, 50, NULL, 11, 37),
+(59, 1, 50.2, NULL, 11, 37),
+(60, 1, 345, NULL, 11, 37),
+(61, 1, 23.3, NULL, 11, 37),
+(62, 1, 0.34, NULL, 11, 37),
+(63, 1, 0.34, NULL, 11, 37);
 
 --
 -- Índices para tablas volcadas
@@ -179,7 +203,7 @@ ALTER TABLE `transacciones`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `conexiones`
@@ -191,19 +215,19 @@ ALTER TABLE `conexiones`
 -- AUTO_INCREMENT de la tabla `cuentas_corrientes`
 --
 ALTER TABLE `cuentas_corrientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `tarjetas`
 --
 ALTER TABLE `tarjetas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `transacciones`
 --
 ALTER TABLE `transacciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- Restricciones para tablas volcadas

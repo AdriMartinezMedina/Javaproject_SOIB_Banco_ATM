@@ -177,7 +177,6 @@ public class ListadoTarjetas extends javax.swing.JFrame {
 //        System.out.println(random);
 //        System.out.println(date);
 //        System.out.println(tar);
-
         int id_cc;
 
         id_cc = Home.get_id_cuenta_corriente_by_id_cliente(cliente.getId());
@@ -187,18 +186,28 @@ public class ListadoTarjetas extends javax.swing.JFrame {
         try {
             String query = "INSERT INTO tarjetas (numero_tarjeta, fecha_caducidad, cvv,id_cuenta_corriente)"
                     + "VALUES (" + tar + ",'" + date + "'," + random + ", " + id_cc + ")";
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/atm", "root", "");
+
+            String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
+            String usuarioBbdd = Variables.usuarioServidor;
+            String contrasenyaBbdd = Variables.contrasenyaServidor;
+
+            if (contrasenyaBbdd.equals("null")) {
+                con = DriverManager.getConnection(dato, usuarioBbdd, "");
+            } else {
+                con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
+            }
+
             PreparedStatement ps = con.prepareStatement(query);
 
             ps.executeUpdate();
-            
+
             JOptionPane.showMessageDialog(null, "Tarjeta añadida con éxito");
 
         } catch (Exception e) {
             e.printStackTrace();
 
         }
-        
+
         //refrescamos las tarjetas
         mostrarTarjetas();
 
@@ -276,14 +285,23 @@ public class ListadoTarjetas extends javax.swing.JFrame {
             Date caducidad;
             int cvv;
             String cuenta_corriente;
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/atm", "root", "");
+
+            String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
+            String usuarioBbdd = Variables.usuarioServidor;
+            String contrasenyaBbdd = Variables.contrasenyaServidor;
+            Connection con;
+
+            if (contrasenyaBbdd.equals("null")) {
+                con = DriverManager.getConnection(dato, usuarioBbdd, "");
+            } else {
+                con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
+            }
+
             Statement st = con.createStatement();
             String query = "SELECT * FROM tarjetas JOIN cuentas_corrientes ON tarjetas.id_cuenta_corriente "
                     + "= cuentas_corrientes.id JOIN clientes ON cuentas_corrientes.id_cliente "
                     + "= clientes.id WHERE clientes.id = " + cliente.getId();
-            // SELECT * FROM tarjetas JOIN cuentas_corrientes ON tarjetas.id_cuenta_corriente = cuentas_corrientes.id
-            // JOIN clientes ON cuentas_corrientes.id_cliente = clientes.id WHERE clientes.id = 11;
-//            System.out.println(query);
+
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 id = rs.getInt("id");
@@ -292,13 +310,11 @@ public class ListadoTarjetas extends javax.swing.JFrame {
                 cvv = rs.getInt("cvv");
                 cuenta_corriente = rs.getString("id_cuenta_corriente");
 
-                //System.out.println(id+" "+num_tarjeta+" "+caducidad+" "+cvv+" "+cuenta_corriente);
-//                jTextAreaLT.setText(id+" "+num_tarjeta+" "+caducidad+" "+cvv+" "+cuenta_corriente);
                 dtm.addRow(new Object[]{num_tarjeta, caducidad, cvv});
             }
 
         } catch (Exception e) {
-//            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 }

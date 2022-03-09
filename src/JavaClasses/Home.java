@@ -30,6 +30,8 @@ public class Home extends javax.swing.JFrame {
     Statement st;
     String nombre;
     Cliente cliente;
+    static double balance = 0;
+    static int id_cuenta_corriente = 0;
 
     /**
      * Creates new form Register_Window
@@ -41,13 +43,13 @@ public class Home extends javax.swing.JFrame {
         this.cliente = cliente;
 
         BienvenidoLabel.setText(BienvenidoLabel.getText() + ", " + cliente.getNombre());
-        int balance = getBalance(cliente.getId());
+        balance = getBalance(cliente.getId());
 
         jLabelBalance.setText(String.valueOf(balance) + "€");
 
         //mostramos transacciones
         mostrarTransacciones(getTransacciones(cliente.getId()));
-        
+
         setLocationRelativeTo(null);
     }
 
@@ -268,6 +270,9 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        EnviarButton.setVisible(false);
+        imagenenviar.setVisible(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -306,11 +311,14 @@ public class Home extends javax.swing.JFrame {
         try {
             int id_cuenta_corriente = Home.get_id_cuenta_corriente_by_id_cliente(cliente.getId());
             int id_cliente = cliente.getId();
+            cantidad = cantidad.replace(',', '.');
+            cantidad = cantidad.replace("€", "");
+            cantidad = cantidad.replaceAll("[A-z]", "");
+
             insertarDinero(cantidad, id_cuenta_corriente, id_cliente, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(cantidad);
 
         mostrarTransacciones(getTransacciones(cliente.getId()));
 
@@ -325,7 +333,7 @@ public class Home extends javax.swing.JFrame {
 
     private void ExtraerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtraerButtonActionPerformed
         // TODO add your handling code here:
-        
+
         //sacar dinero
         String cantidad = "";
         cantidad = JOptionPane.showInputDialog("Dinero que desea sacar");
@@ -333,11 +341,14 @@ public class Home extends javax.swing.JFrame {
         try {
             int id_cuenta_corriente = Home.get_id_cuenta_corriente_by_id_cliente(cliente.getId());
             int id_cliente = cliente.getId();
+            cantidad = cantidad.replace(',', '.');
+            cantidad = cantidad.replace("€", "");
+            cantidad = cantidad.replaceAll("[A-z]", "");
+
             insertarDinero(cantidad, id_cuenta_corriente, id_cliente, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(cantidad);
 
         mostrarTransacciones(getTransacciones(cliente.getId()));
     }//GEN-LAST:event_ExtraerButtonActionPerformed
@@ -399,12 +410,22 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
-    public static int getBalance(int id) {
-        int balance = 0;
-        System.out.println(id);
+    public static double getBalance(int id) {
+        balance = 0;
+
         try {
 
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/atm", "root", "");
+            String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
+            String usuarioBbdd = Variables.usuarioServidor;
+            String contrasenyaBbdd = Variables.contrasenyaServidor;
+            Connection con;
+
+            if (contrasenyaBbdd.equals("null")) {
+                con = DriverManager.getConnection(dato, usuarioBbdd, "");
+            } else {
+                con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
+            }
+
             Statement st = con.createStatement();
             String query = "SELECT * FROM `cuentas_corrientes` where id_cliente = " + id + ";";
             ResultSet rs = st.executeQuery(query);
@@ -420,11 +441,17 @@ public class Home extends javax.swing.JFrame {
     private void insertarDinero(String cantidad, int id_cuenta_corriente, int id_cliente, boolean ingresar_sacar) {
 
         double cant = Double.parseDouble(cantidad);
-        //int id_cuenta_corriente = 5;
-        //int id_cliente = 13;
-
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/atm", "root", "");
+            String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
+            String usuarioBbdd = Variables.usuarioServidor;
+            String contrasenyaBbdd = Variables.contrasenyaServidor;
+            Connection con;
+
+            if (contrasenyaBbdd.equals("null")) {
+                con = DriverManager.getConnection(dato, usuarioBbdd, "");
+            } else {
+                con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
+            }
             PreparedStatement ps = con.prepareStatement("INSERT INTO `transacciones` (`id`, `tipo_transaccion`, `cantidad_transaccion`, `id_tarjeta`, `id_cuenta_corriente`, `id_cliente`) VALUES (NULL, " + ingresar_sacar + ", ?, NULL, ?, ?)");
 
             ps.setDouble(1, cant);
@@ -433,22 +460,47 @@ public class Home extends javax.swing.JFrame {
 
             ps.executeUpdate();
 
+            if (ingresar_sacar) {
+                balance -= cant;
+            } else {
+                balance += cant;
+            }
+
+            // Actualizamos el balance de la cuenta corriente
+            PreparedStatement ps2 = con.prepareStatement("UPDATE `cuentas_corrientes` SET `balance` = ? WHERE `cuentas_corrientes`.`id` = ?");
+
+            ps2.setDouble(1, balance);
+            ps2.setInt(2, id_cuenta_corriente);
+
+            ps2.executeUpdate();
+            ps2.close();
+
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 
     public static int get_id_cuenta_corriente_by_id_cliente(int id) {
-        int id_cuenta_corriente = 0;
 
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/atm", "root", "");
+            String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
+            String usuarioBbdd = Variables.usuarioServidor;
+            String contrasenyaBbdd = Variables.contrasenyaServidor;
+            Connection con;
+
+            if (contrasenyaBbdd.equals("null")) {
+                con = DriverManager.getConnection(dato, usuarioBbdd, "");
+            } else {
+                con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
+            }
+
             Statement st = con.createStatement();
             String query = "SELECT * FROM `cuentas_corrientes` where id_cliente = " + id + ";";
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 id_cuenta_corriente = rs.getInt("id");
+                balance = rs.getDouble("balance");
+
             }
 
         } catch (Exception e) {
@@ -463,7 +515,7 @@ public class Home extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) TransaccionesTable.getModel();
 
         model.setRowCount(0);
-        
+
         for (int i = 0; i < trans.size(); i++) {
             String tipo = "";
             if (trans.get(i).isTipo_transaccion()) {
@@ -471,9 +523,11 @@ public class Home extends javax.swing.JFrame {
             } else {
                 tipo = "INGRESAR";
             }
-            model.addRow(new Object[]{tipo, trans.get(i).getCantidad_transaccion() + "€"});
+            model.addRow(new Object[]{tipo, trans.get(i).getCantidad_transaccion() + "€", balance + "€"});
 
         }
+
+        jLabelBalance.setText(balance + "€");
 
     }
 
@@ -482,7 +536,17 @@ public class Home extends javax.swing.JFrame {
         ArrayList<Transaccion> transacciones = new ArrayList<>();
 
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/atm", "root", "");
+            String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
+            String usuarioBbdd = Variables.usuarioServidor;
+            String contrasenyaBbdd = Variables.contrasenyaServidor;
+            Connection con;
+
+            if (contrasenyaBbdd.equals("null")) {
+                con = DriverManager.getConnection(dato, usuarioBbdd, "");
+            } else {
+                con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
+            }
+
             Statement st = con.createStatement();
             String query = "SELECT * FROM `transacciones` where id_cliente = " + id + " ORDER BY id DESC;";
             ResultSet rs = st.executeQuery(query);

@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -246,8 +247,7 @@ public class Login_Window extends javax.swing.JFrame {
         String usuario = jTextFieldUser.getText();
         String contrasenya = String.valueOf(jPasswordFieldContrasena.getPassword());
 
-        System.out.println("usuario: " + usuario + " contraseña: " + contrasenya);
-        
+
         if (usuario.equals("admin") && contrasenya.equals("admin")) {
             // instanciamos un objeto de la clase Register_Window.java
             Opciones opciones = new Opciones();
@@ -261,7 +261,7 @@ public class Login_Window extends javax.swing.JFrame {
             }
         } else {
             Cliente cliente = iniciarSesion(usuario, contrasenya);
-            System.out.println(cliente.toString());
+         
 
             if (usuario.equals("")) {
                 JOptionPane.showMessageDialog(null, "El campo usuario está vacío", "Error al iniciar sesión", JOptionPane.ERROR_MESSAGE);
@@ -347,15 +347,26 @@ public class Login_Window extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private Cliente iniciarSesion(String usuario, String contrasenya) {
-//        System.out.println("usuario " + usuario + " contraseña: " + contrasenya);
+        
         //aqui iniciamos sesión
         cliente = new Cliente();
 
+        String ContraseñaEncript = DigestUtils.shaHex(contrasenya);
+
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/atm", "root", "");
+            String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
+            String usuarioBbdd = Variables.usuarioServidor;
+            String contrasenyaBbdd = Variables.contrasenyaServidor;
+            
+            if (contrasenyaBbdd.equals("null")) {
+                con = DriverManager.getConnection(dato, usuarioBbdd, "");
+            } else {
+                con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
+            }
+
             st = con.createStatement();
-            String query = "SELECT * FROM clientes where usuario = \"" + usuario + "\" and contrasena = \"" + contrasenya + "\"";
-            System.out.println(query);
+            String query = "SELECT * FROM clientes where usuario = \"" + usuario + "\" and contrasena = \"" + ContraseñaEncript + "\"";
+           
             rs = st.executeQuery(query);
             while (rs.next()) {
                 cliente = new Cliente(rs.getInt("id"), rs.getString("nombre"), rs.getString("apellidos"), rs.getDate("f_nacimiento"), rs.getString("dni"), rs.getString("direccion"), rs.getString("poblacion"), rs.getString("usuario"), rs.getString("contrasena"), rs.getString("f_cr"));

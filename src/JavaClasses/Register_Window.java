@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Random;
 import javax.swing.JOptionPane;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -324,7 +325,9 @@ public class Register_Window extends javax.swing.JFrame {
         String cp = jTextFieldCP.getText();
         String email = jTextFieldEmail.getText();
         String contrasena = String.valueOf(jPasswordFieldContrasenaRegistro.getPassword());
-        Cliente cliente = registrar(nombre, apellidos, dni, fecha, direccion, cp, email, contrasena);
+        String ContraseñaEncript = DigestUtils.shaHex(contrasena);
+        
+        Cliente cliente = registrar(nombre, apellidos, dni, fecha, direccion, cp, email, ContraseñaEncript);
 
         if (cliente == null) {
             JOptionPane.showMessageDialog(null, "No se ha registrado pinche pendejo", "Error al registrar", JOptionPane.ERROR_MESSAGE);
@@ -450,7 +453,18 @@ public class Register_Window extends javax.swing.JFrame {
         Cliente cliente = null;
         try {
             //aqui nos registramos
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/atm", "root", "");
+            String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
+            String usuarioBbdd = Variables.usuarioServidor;
+            String contrasenyaBbdd = Variables.contrasenyaServidor;
+            Connection con;
+            
+            if (contrasenyaBbdd.equals("null")) {
+                con = DriverManager.getConnection(dato, usuarioBbdd, "");
+            } else {
+                con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
+            }
+            
+            
             PreparedStatement update = con.prepareStatement("INSERT INTO `clientes` (`nombre`, `apellidos`, `f_nacimiento`, `dni`, `direccion`, `poblacion`, `usuario`, `contrasena`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             update.setString(1, nombre);
             update.setString(2, apellidos);
@@ -466,14 +480,14 @@ public class Register_Window extends javax.swing.JFrame {
             //buscamos el último cliente creado (el de arriba)
             st = con.createStatement();
             String query = "SELECT * FROM `clientes` ORDER BY ID DESC LIMIT 1";
-            System.out.println(query);
+           
             rs = st.executeQuery(query);
             while (rs.next()) {
                 id_cliente = rs.getInt("id");
                 cliente = new Cliente(rs.getInt("id"), rs.getString("nombre"), rs.getString("apellidos"), rs.getDate("f_nacimiento"), rs.getString("dni"), rs.getString("direccion"), rs.getString("poblacion"), rs.getString("usuario"), rs.getString("contrasena"), rs.getString("f_cr"));
 
             }
-            System.out.println("ID " + id_cliente);
+            
             String iban = "ES";
             Random r = new Random();
             for (int i = 0; i < 22; i++) {

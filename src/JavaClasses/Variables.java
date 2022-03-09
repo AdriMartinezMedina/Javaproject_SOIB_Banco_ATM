@@ -22,6 +22,10 @@ public class Variables {
     static Color terciario = Color.cyan;
     static String nombre = "";
     static String frase = "";
+    static String servidor = "";
+    static String bbdd = "";
+    static String usuarioServidor = "";
+    static String contrasenyaServidor = "";
 
     public static void getVariables() {
         File archivo = null;
@@ -38,9 +42,7 @@ public class Variables {
             String linea;
             while ((linea = br.readLine()) != null) {
                 linea = linea.replaceAll("cliente: ", "");
-                //System.out.println(linea);
                 cliente = linea;
-                System.out.println(cliente);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,11 +148,23 @@ public class Variables {
                         case "frase":
                             frase = variable[1];
                             break;
+                        case "servidor":
+                            servidor = variable[1];
+                            break;
+                        case "bbdd":
+                            bbdd = variable[1];
+                            break;
+                       case "usuarioServidor":
+                            usuarioServidor = variable[1];
+                            break;
+                        case "contrasenyaServidor":
+                            contrasenyaServidor = variable[1];
+                            break;
                     }
+                    
 
                 }
-                //System.out.println(variable[0] + " " + variable[1]);
-                //cliente = linea;
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
