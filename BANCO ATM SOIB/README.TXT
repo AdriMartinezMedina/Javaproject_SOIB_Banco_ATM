@@ -22,6 +22,8 @@ a la que apunta, el usuario de la base de datos o su contraseña, los colores de
 * Para añadir un cliente nuevo, es suficiente con crear un archivo de texto con extensión .ini
 siguiendo el modelo de "lib/default.ini". Una vez creado, se cambia de cliente con el nombre
 del cliente nuevo.
+* AL REGISTRARSE, LA FECHA DE NACIMIENTO TIENE QUE SER DEL FORMATO YYYY-MM-DD, por ejemplo, 
+1992-12-10
 * Recordar a nuestros usuarios, que cualquier duda que tenga, puede contactar con nosotros.
 
 Gracias por confiar en nuestro equipo.
