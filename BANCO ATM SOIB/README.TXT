@@ -1,32 +1,27 @@
-========================
-        BANCO ATM
-========================
+================================================================================================
+                                           BANCO ATM
+================================================================================================
 
-When you build an Java application project that has a main class, the IDE
-automatically copies all of the JAR
-files on the projects classpath to your projects dist/lib folder. The IDE
-also adds each of the JAR files to the Class-Path element in the application
-JAR files manifest file (MANIFEST.MF).
+Para ejecutar la aplicación en Linux, tienes que escribir en la terminal el siguiente comando:
 
-To run the project from the command line, go to the dist folder and
-type the following:
+java -jar "Javaproject_SOIB_Banco_ATM.jar"
 
-java -jar "Javaproject_SOIB_Banco_ATM.jar" 
+Para ejecutar en Windows, basta con hacer doble click sobre el archivo .jar. 
 
-To distribute this project, zip up the dist folder (including the lib folder)
-and distribute the ZIP file.
 
-Notes:
 
-* If two JAR files on the project classpath have the same name, only the first
-JAR file is copied to the lib folder.
-* Only JAR files are copied to the lib folder.
-If the classpath contains other types of files or folders, these files (folders)
-are not copied.
-* If a library on the projects classpath also has a Class-Path element
-specified in the manifest,the content of the Class-Path element has to be on
-the projects runtime path.
-* To set a main class in a standard Java project, right-click the project node
-in the Projects window and choose Properties. Then click Run and enter the
-class name in the Main Class field. Alternatively, you can manually type the
-class name in the manifest Main-Class element.
+Notas:
+
+* Para cambiar de cliente, al abrir la aplicación, en el login hay que entrar con el 
+usuario "admin" y contraseña "admin". Luego escribir el nombre del cliente y guardar.
+Los posibles clientes son "bbva", "ing", "lacaixa", "santander" o "default" si el cliente
+es PeponaBank. También se puede hacer el cambio de cliente desde /lib/cliente.ini.
+* Recordamos que para cada cliente, en el archivo .ini del cliente que se encuentra en la carpeta
+/lib/, puedes cambiar la configuración de cada cliente, como por ejemplo, la base de datos
+a la que apunta, el usuario de la base de datos o su contraseña, los colores del banco, etc
+* Para añadir un cliente nuevo, es suficiente con crear un archivo de texto con extensión .ini
+siguiendo el modelo de "lib/default.ini". Una vez creado, se cambia de cliente con el nombre
+del cliente nuevo.
+* Recordar a nuestros usuarios, que cualquier duda que tenga, puede contactar con nosotros.
+
+Gracias por confiar en nuestro equipo.
