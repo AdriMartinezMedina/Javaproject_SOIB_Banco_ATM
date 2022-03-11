@@ -325,6 +325,8 @@ public class Register_Window extends javax.swing.JFrame {
         String cp = jTextFieldCP.getText();
         String email = jTextFieldEmail.getText();
         String contrasena = String.valueOf(jPasswordFieldContrasenaRegistro.getPassword());
+        
+        //ciframos la contraseña con SHA
         String ContraseñaEncript = DigestUtils.shaHex(contrasena);
         
         Cliente cliente = registrar(nombre, apellidos, dni, fecha, direccion, cp, email, ContraseñaEncript);
@@ -448,6 +450,18 @@ public class Register_Window extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldNombre;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Registra un cliente
+     *
+     * @param nombre Nombre del cliente
+     * @param apellidos Apellidos del cliente
+     * @param dni DNI del cliente
+     * @param fecha Fecha de nacimiento del cliente
+     * @param direccion Dirección del cliente
+     * @param cp Código Postal del cliente
+     * @param email Email del cliente
+     * @param contrasena Contraseña del cliente
+     */
     private Cliente registrar(String nombre, String apellidos, String dni, String fecha, String direccion, String cp, String email, String contrasena) {
 
         Cliente cliente = null;
@@ -463,7 +477,6 @@ public class Register_Window extends javax.swing.JFrame {
             } else {
                 con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
             }
-            
             
             PreparedStatement update = con.prepareStatement("INSERT INTO `clientes` (`nombre`, `apellidos`, `f_nacimiento`, `dni`, `direccion`, `poblacion`, `usuario`, `contrasena`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             update.setString(1, nombre);

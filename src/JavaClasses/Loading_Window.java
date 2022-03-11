@@ -8,10 +8,11 @@ package JavaClasses;
 import java.awt.Color;
 import java.awt.Panel;
 import java.util.Random;
+import javax.swing.ImageIcon;
 
 /**
  *
- * @author Admin
+ * @author Youssef
  */
 public class Loading_Window extends javax.swing.JFrame {
 
@@ -31,9 +32,8 @@ public class Loading_Window extends javax.swing.JFrame {
         Carga.setForeground(Variables.principal);
         Carga.setBackground(Variables.principal);
         Carga.setOpaque(true);
-
-        //Panel.setBackground(Variables.principal);
-        //Panel.setOpaque(true);
+        
+        
         
     }
 
@@ -157,6 +157,7 @@ public class Loading_Window extends javax.swing.JFrame {
                     splash.setVisible(false); // cierra el formulario 
                     Login_Window VentanaLogin = new Login_Window();
                     VentanaLogin.setVisible(true); // enseña ventana
+                    //VentanaLogin.setIconImage(new ImageIcon(Loading_Window.class.getResource("/logo_icono.png")).getImage());
                 }
             }
             return;  // for para la carga

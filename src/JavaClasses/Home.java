@@ -22,9 +22,6 @@ import javax.swing.table.DefaultTableModel;
 public class Home extends javax.swing.JFrame {
 
     static Home register;
-    //String fnamez;
-    //int balancz;
-    //int operation;
     Connection con;
     ResultSet rs;
     Statement st;
@@ -50,6 +47,7 @@ public class Home extends javax.swing.JFrame {
         //mostramos transacciones
         mostrarTransacciones(getTransacciones(cliente.getId()));
 
+        //ponemos en medio la ventana
         setLocationRelativeTo(null);
     }
 
@@ -290,11 +288,13 @@ public class Home extends javax.swing.JFrame {
     private void CerrarSesionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionButtonActionPerformed
         cliente = null;
 
+        //cambiamos de ventana
         Login_Window login = new Login_Window();
         login.setVisible(true);
         try {
             this.setVisible(false);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_CerrarSesionButtonActionPerformed
 
@@ -303,23 +303,28 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitButtonActionPerformed
 
     private void AñadirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AñadirButtonActionPerformed
-        // TODO add your handling code here:
+
         //añadir dinero
         String cantidad = "";
         cantidad = JOptionPane.showInputDialog("Dinero que desea ingresar");
 
         try {
+            //cogemos la cuenta corriente donde tenemos que ingresar o sacar dinero
             int id_cuenta_corriente = Home.get_id_cuenta_corriente_by_id_cliente(cliente.getId());
             int id_cliente = cliente.getId();
+
+            //quitamos las letras, o comas o €
             cantidad = cantidad.replace(',', '.');
             cantidad = cantidad.replace("€", "");
             cantidad = cantidad.replaceAll("[A-z]", "");
 
+            //Ingresamos o sacamos dinero
             insertarDinero(cantidad, id_cuenta_corriente, id_cliente, false);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
+        //mostramos las transacciones
         mostrarTransacciones(getTransacciones(cliente.getId()));
 
     }//GEN-LAST:event_AñadirButtonActionPerformed
@@ -332,15 +337,17 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAbrirTarjetasActionPerformed
 
     private void ExtraerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtraerButtonActionPerformed
-        // TODO add your handling code here:
 
         //sacar dinero
         String cantidad = "";
         cantidad = JOptionPane.showInputDialog("Dinero que desea sacar");
 
         try {
+            //cogemos la cuenta corriente donde tenemos que ingresar o sacar dinero
             int id_cuenta_corriente = Home.get_id_cuenta_corriente_by_id_cliente(cliente.getId());
             int id_cliente = cliente.getId();
+
+            //quitamos las letras, o comas o €
             cantidad = cantidad.replace(',', '.');
             cantidad = cantidad.replace("€", "");
             cantidad = cantidad.replaceAll("[A-z]", "");
@@ -349,7 +356,7 @@ public class Home extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        //mostramos las transacciones
         mostrarTransacciones(getTransacciones(cliente.getId()));
     }//GEN-LAST:event_ExtraerButtonActionPerformed
 
@@ -410,11 +417,17 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Coge el balance del cliente
+     *
+     * @param id Balance del cliente
+     * @return Regresa el balance
+     */
     public static double getBalance(int id) {
         balance = 0;
 
         try {
-
+            //nos conectamos
             String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
             String usuarioBbdd = Variables.usuarioServidor;
             String contrasenyaBbdd = Variables.contrasenyaServidor;
@@ -426,6 +439,7 @@ public class Home extends javax.swing.JFrame {
                 con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
             }
 
+            //cogemos el balance del cliente
             Statement st = con.createStatement();
             String query = "SELECT * FROM `cuentas_corrientes` where id_cliente = " + id + ";";
             ResultSet rs = st.executeQuery(query);
@@ -438,6 +452,14 @@ public class Home extends javax.swing.JFrame {
         return balance;
     }
 
+    /**
+     * Inserta dinero en la cuenta corriente del cliente
+     *
+     * @param cantidad Cantidad del dinero
+     * @param id_cuenta_corriente ID de la cuenta corriente
+     * @param id_cliente ID del cliente
+     * @param ingresar_sacar Boolean para saber si ingresa o saca dinero
+     */
     private void insertarDinero(String cantidad, int id_cuenta_corriente, int id_cliente, boolean ingresar_sacar) {
 
         double cant = Double.parseDouble(cantidad);
@@ -452,6 +474,7 @@ public class Home extends javax.swing.JFrame {
             } else {
                 con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
             }
+            //añadimos la transaccion
             PreparedStatement ps = con.prepareStatement("INSERT INTO `transacciones` (`id`, `tipo_transaccion`, `cantidad_transaccion`, `id_tarjeta`, `id_cuenta_corriente`, `id_cliente`) VALUES (NULL, " + ingresar_sacar + ", ?, NULL, ?, ?)");
 
             ps.setDouble(1, cant);
@@ -480,6 +503,12 @@ public class Home extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Coge el id de la cuenta corriente del cliente
+     *
+     * @param id ID del cliente
+     * @return Regresa id de la cuenta corriente
+     */
     public static int get_id_cuenta_corriente_by_id_cliente(int id) {
 
         try {
@@ -500,7 +529,6 @@ public class Home extends javax.swing.JFrame {
             while (rs.next()) {
                 id_cuenta_corriente = rs.getInt("id");
                 balance = rs.getDouble("balance");
-
             }
 
         } catch (Exception e) {
@@ -510,6 +538,11 @@ public class Home extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Muestra transacciones del cliente
+     *
+     * @param trans Transacciones del cliente
+     */
     private void mostrarTransacciones(ArrayList<Transaccion> trans) {
 
         DefaultTableModel model = (DefaultTableModel) TransaccionesTable.getModel();
@@ -524,15 +557,20 @@ public class Home extends javax.swing.JFrame {
                 tipo = "INGRESAR";
             }
             model.addRow(new Object[]{tipo, trans.get(i).getCantidad_transaccion() + "€", balance + "€"});
-
         }
 
         jLabelBalance.setText(balance + "€");
-
     }
 
+    /**
+     * Consigue transacciones del cliente
+     *
+     * @param id ID del cliente
+     * @return Regresa las transacciones
+     */
     private ArrayList<Transaccion> getTransacciones(int id) {
 
+        //creamos una pila de transacciones
         ArrayList<Transaccion> transacciones = new ArrayList<>();
 
         try {
@@ -547,19 +585,12 @@ public class Home extends javax.swing.JFrame {
                 con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
             }
 
+            //cogemos las transacciones
             Statement st = con.createStatement();
             String query = "SELECT * FROM `transacciones` where id_cliente = " + id + " ORDER BY id DESC;";
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
-
-                /*
-                    private int id;
-                    private boolean tipo_transaccion; //false = ingresar dinero, true = sacar dinero
-                    private double cantidad_transaccion;
-                    private int id_tarjeta;
-                    private int id_cuenta_corriente;
-                    private int id_cliente;
-                 */
+                //añadimos la transaccion
                 Transaccion trans = new Transaccion(rs.getInt("id"), rs.getBoolean("tipo_transaccion"), rs.getDouble("cantidad_transaccion"), rs.getInt("id_tarjeta"), rs.getInt("id_cuenta_corriente"), rs.getInt("id_cliente"));
                 transacciones.add(trans);
             }

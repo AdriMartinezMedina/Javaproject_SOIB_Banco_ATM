@@ -102,7 +102,7 @@ public class Opciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
         String banco = jTextFieldBanco.getText();
 
         FileWriter fichero = null;
@@ -134,11 +134,7 @@ public class Opciones extends javax.swing.JFrame {
         load.Progreso.setVisible(false);
 
         this.setVisible(false); // cierra el formulario 
-//        String[] args = {""};
-//
-//        Login_Window login = new Login_Window();
-//        login.setVisible(true);
-
+        
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -149,8 +145,6 @@ public class Opciones extends javax.swing.JFrame {
             }
         }, 4000);
 
-        //Login_Window login = new Login_Window();//llamos la ventana para iniciarla
-        //login.setVisible(true); //Se hace visible
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void ReturnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReturnButtonActionPerformed

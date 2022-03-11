@@ -174,9 +174,6 @@ public class ListadoTarjetas extends javax.swing.JFrame {
             tar += String.valueOf(num);
         }
 
-//        System.out.println(random);
-//        System.out.println(date);
-//        System.out.println(tar);
         int id_cc;
 
         id_cc = Home.get_id_cuenta_corriente_by_id_cliente(cliente.getId());
@@ -274,6 +271,10 @@ public class ListadoTarjetas extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Método que mostrará las tarjeras del cliente
+     * 
+     */
     private void mostrarTarjetas() {
 
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
@@ -297,6 +298,7 @@ public class ListadoTarjetas extends javax.swing.JFrame {
                 con = DriverManager.getConnection(dato, usuarioBbdd, contrasenyaBbdd);
             }
 
+            //cogemos las tarjetas para mostrarlas
             Statement st = con.createStatement();
             String query = "SELECT * FROM tarjetas JOIN cuentas_corrientes ON tarjetas.id_cuenta_corriente "
                     + "= cuentas_corrientes.id JOIN clientes ON cuentas_corrientes.id_cliente "
@@ -309,7 +311,7 @@ public class ListadoTarjetas extends javax.swing.JFrame {
                 caducidad = rs.getDate("fecha_caducidad");
                 cvv = rs.getInt("cvv");
                 cuenta_corriente = rs.getString("id_cuenta_corriente");
-
+                //añadimos la tarjeta
                 dtm.addRow(new Object[]{num_tarjeta, caducidad, cvv});
             }
 

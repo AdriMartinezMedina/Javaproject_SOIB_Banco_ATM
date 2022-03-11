@@ -5,6 +5,7 @@
  */
 package JavaClasses;
 
+import java.awt.event.KeyEvent;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -25,9 +26,6 @@ public class Login_Window extends javax.swing.JFrame {
      * Creates new form Login_Window
      */
     static Login_Window login;
-    //String fnamez;
-    //int balancz;
-    //int operation;
     Connection con;
     ResultSet rs;
     Statement st;
@@ -117,6 +115,12 @@ public class Login_Window extends javax.swing.JFrame {
             }
         });
 
+        jPasswordFieldContrasena.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordFieldContrasenaKeyPressed(evt);
+            }
+        });
+
         jButton1.setBackground(new java.awt.Color(255, 204, 204));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/icons8-acerca-de-30.png"))); // NOI18N
         jButton1.setText("Acerca De");
@@ -202,6 +206,8 @@ public class Login_Window extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jPasswordFieldContrasena.setTransferHandler(null);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -247,7 +253,6 @@ public class Login_Window extends javax.swing.JFrame {
         String usuario = jTextFieldUser.getText();
         String contrasenya = String.valueOf(jPasswordFieldContrasena.getPassword());
 
-
         if (usuario.equals("admin") && contrasenya.equals("admin")) {
             // instanciamos un objeto de la clase Register_Window.java
             Opciones opciones = new Opciones();
@@ -261,14 +266,13 @@ public class Login_Window extends javax.swing.JFrame {
             }
         } else {
             Cliente cliente = iniciarSesion(usuario, contrasenya);
-         
 
             if (usuario.equals("")) {
                 JOptionPane.showMessageDialog(null, "El campo usuario está vacío", "Error al iniciar sesión", JOptionPane.ERROR_MESSAGE);
             } else if (cliente.getNombre() == null) {
                 JOptionPane.showMessageDialog(null, "El usuario o la contraseña son incorrectos", "Error al iniciar sesión", JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "Hola " + cliente.getNombre(), "BIEN al iniciar sesión", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Bienvenido " + cliente.getNombre(), "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
 
                 // instanciamos un objeto de la clase Register_Window.java
                 Home home = new Home(cliente);
@@ -292,6 +296,15 @@ public class Login_Window extends javax.swing.JFrame {
 
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jPasswordFieldContrasenaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordFieldContrasenaKeyPressed
+        // TODO add your handling code here:
+
+        if (evt.getKeyCode() == KeyEvent.VK_CONTROL && evt.getKeyCode() == KeyEvent.VK_V) {
+            jPasswordFieldContrasena.setText("");
+            evt.consume();
+        }
+    }//GEN-LAST:event_jPasswordFieldContrasenaKeyPressed
 
     /**
      * @param args the command line arguments
@@ -346,8 +359,14 @@ public class Login_Window extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUser;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Método que iniciará sesión
+     *
+     * @param usuario Usuario del cliente
+     * @param contrasenya Contraseña del cliente
+     */
     private Cliente iniciarSesion(String usuario, String contrasenya) {
-        
+
         //aqui iniciamos sesión
         cliente = new Cliente();
 
@@ -357,7 +376,7 @@ public class Login_Window extends javax.swing.JFrame {
             String dato = "jdbc:mysql://" + Variables.servidor + ":3306/" + Variables.bbdd;
             String usuarioBbdd = Variables.usuarioServidor;
             String contrasenyaBbdd = Variables.contrasenyaServidor;
-            
+
             if (contrasenyaBbdd.equals("null")) {
                 con = DriverManager.getConnection(dato, usuarioBbdd, "");
             } else {
@@ -366,7 +385,7 @@ public class Login_Window extends javax.swing.JFrame {
 
             st = con.createStatement();
             String query = "SELECT * FROM clientes where usuario = \"" + usuario + "\" and contrasena = \"" + ContraseñaEncript + "\"";
-           
+
             rs = st.executeQuery(query);
             while (rs.next()) {
                 cliente = new Cliente(rs.getInt("id"), rs.getString("nombre"), rs.getString("apellidos"), rs.getDate("f_nacimiento"), rs.getString("dni"), rs.getString("direccion"), rs.getString("poblacion"), rs.getString("usuario"), rs.getString("contrasena"), rs.getString("f_cr"));
